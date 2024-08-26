@@ -1,0 +1,45 @@
+.chessboard-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.tile {
+  height: 100px;
+  width: 100px;
+}
+
+.chessboard-row.odd {
+  .tile:nth-child(odd) {
+    background-color: rgb(56, 139, 212);
+  }
+
+  .tile:nth-child(even) {
+    background-color: whitesmoke;
+  }
+}
+
+.chessboard-row.even {
+  .tile:nth-child(even) {
+    background-color: rgb(56, 139, 212);;
+  }
+
+  .tile:nth-child(odd) {
+  background-color: whitesmoke;
+  }
+}
+
+#root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  color: black;
+}
+
+body {
+  background-color: black;
+}
