@@ -13,6 +13,10 @@ export const checkValidMove = ( move ) => {
 	if ( piece === 'blackBishop' || piece === 'whiteBishop' ) {
 		return bishopMove( origin, destination )
 	}
+	
+	if ( piece === 'blackQueen' || piece === 'whiteQueen' ) {
+		return bishopMove( origin, destination ) || rookMove( origin, destination )
+	}
 
 }
 
