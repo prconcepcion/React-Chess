@@ -18,6 +18,18 @@ export const checkValidMove = ( move ) => {
 		return bishopMove( origin, destination ) || rookMove( origin, destination )
 	}
 
+	if ( piece === 'blackKing' || piece === 'whiteKing' ) {
+		return kingMove( origin, destination )
+	}
+
+	if ( piece === 'blackPawn' ) {
+		return pawnMove( origin, destination, 1 )
+	}
+
+	if ( piece === 'whitePawn' ) {
+		return pawnMove( origin, destination, -1 )
+	}
+
 }
 
 const knightMove = ( origin, destination ) => {
@@ -95,4 +107,43 @@ const bishopMove = ( origin, destination ) => {
   
 	return false
 
+}
+
+const kingMove = ( origin, destination) => {
+	const possibleMoves = []
+	const y = parseInt(origin[0], 10)
+    const x = parseInt(origin[1], 10)
+
+	const kingMoves = [
+		[-1,-1],
+		[1,-1],
+		[-1, 1],
+		[1,1],
+		[1,0],
+		[-1,0],
+		[0,1],
+		[0,-1]
+	]
+
+	for ( const move of kingMoves ) {
+		const tempX = x+move[0]
+		const tempY = y+move[1]
+		possibleMoves.push( tempY+''+tempX )
+	}
+
+	if ( possibleMoves.includes( destination.x+''+destination.y ) ) {
+		return true
+	}
+  
+	return false
+}
+
+const pawnMove = ( origin, destination, substractor ) => {
+	const y = parseInt(origin[0], 10)
+    const x = parseInt(origin[1], 10)
+	const pawnMove = y+''+( x+substractor )
+
+	if ( pawnMove === destination.x+''+destination.y ) {
+		return true
+	}
 }
