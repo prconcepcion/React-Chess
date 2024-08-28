@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef } from 'react'
 import BlackBishop from '../assets/black-bishop.png'
 import BlackKing from '../assets/black-king.png'
 import BlackKnight from '../assets/black-knight.png'
@@ -14,11 +13,11 @@ import WhiteRook from '../assets/white-rook.png'
 
 
 export const Piece = props => {
+  
     const { name } = props
-    const myRef = useRef(null);
 
     let image = BlackPawn
-    switch(name){
+    switch( name ){
         case 'whiteRook':
             image = WhiteRook
             break;
@@ -56,11 +55,8 @@ export const Piece = props => {
             image = BlackPawn
             break;           
     }
-        
-
-    return (
-        <>
-            <img ref={myRef} src={image} id={name} width="100" height="100" />
-        </>
-    )
+    
+    return <>
+    <img className='piece' id={name} src={image} height="100" width="100" />
+  </>
 }
