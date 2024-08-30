@@ -2,54 +2,54 @@ import { checkValidMove } from "../helper/util";
 
 export const Tile = props => {
 
-  const { 
-    children, 
-    coordinate, 
-    board,
-    setBoard
-  } = props
+	const { 
+		children, 
+		coordinate, 
+		board,
+		setBoard
+	} = props
 
-  function allowDrop(ev) {
-    ev.preventDefault();
-  }
-  
-  function drag(ev) {
-    ev.dataTransfer.setData("piece", ev.target.id);
-    ev.dataTransfer.setData("origin", coordinate);
-  }
-  
-  function drop(ev) {
-    ev.preventDefault();
+	function allowDrop(ev) {
+		ev.preventDefault();
+	}
+	
+	function drag(ev) {
+		ev.dataTransfer.setData("piece", ev.target.id);
+		ev.dataTransfer.setData("origin", coordinate);
+		ev.dataTransfer.setData("side", ev.target.dataset.side );
+	}
+	
+	function drop(ev) {
+		ev.preventDefault();
 
-    const piece = ev.dataTransfer.getData("piece");
-    const origin = ev.dataTransfer.getData("origin");
+		const piece = ev.dataTransfer.getData("piece")
+		let origin = ev.dataTransfer.getData("origin")
+		const side = ev.dataTransfer.getData("side")
+		const tempBoard = board.slice()
+		const destination = { row: parseInt( coordinate[0], 10 ), column: parseInt( coordinate[1], 10 ) }
+		origin = { row: parseInt( origin[0], 10 ), column: parseInt( origin[1], 10) }
 
-    const destination = { x: coordinate[0], y: coordinate[1] }
-    const temp = { x: origin[0], y: origin[1] }
+		if ( ! checkValidMove( { piece, origin: origin, destination, tempBoard, pieceAtDestination: tempBoard[destination.row][destination.column], side } ) ) {
+			return
+		}
 
-    if ( ! checkValidMove( {piece, origin, destination} ) ) {
-      return
-    }
+		tempBoard[destination.row][destination.column] = piece
+		tempBoard[origin.row][origin.column] = null
 
-    const tempBoard = board.slice()
+		setBoard(tempBoard)
+	}
 
-    tempBoard[destination.y][destination.x] = piece
-    tempBoard[temp.y][temp.x] = null
-
-    setBoard(tempBoard)
-  }
-
-  return <>
-    <div
-      className='tile'
-      onDragStart={e=>drag(e)} 
-      onDrop={e=>drop(e)} 
-      onDragOver={e=>allowDrop(e)}
-      data-coordinate={coordinate}
-    >
-      <span draggable={false}>{coordinate}</span>
-      {children}
-    </div>
-  </>
+	return <>
+		<div
+			className='tile'
+			onDragStart={e=>drag(e)} 
+			onDrop={e=>drop(e)} 
+			onDragOver={e=>allowDrop(e)}
+			data-coordinate={coordinate}
+		>
+			<span draggable={false}>{coordinate}</span>
+			{children}
+		</div>
+	</>
 
 }
