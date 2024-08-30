@@ -14,10 +14,10 @@ import WhiteRook from '../assets/white-rook.png'
 
 export const Piece = props => {
   
-    const { name } = props
+    const { name, side } = props
 
     let image = BlackPawn
-    switch( name ){
+    switch( name ) {
         case 'whiteRook':
             image = WhiteRook
             break;
@@ -57,6 +57,6 @@ export const Piece = props => {
     }
     
     return <>
-    <img className='piece' id={name} src={image} height="100" width="100" />
-  </>
+        <img className='piece' id={name} src={image} height="100" width="100" data-side={ side } />
+    </>
 }
