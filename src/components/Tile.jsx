@@ -1,4 +1,6 @@
 import { checkValidMove } from "../helper/util";
+import { useDispatch } from "react-redux";
+import { changeTurn } from "../store/turn/counterTurn";
 
 export const Tile = props => {
 
@@ -8,6 +10,8 @@ export const Tile = props => {
 		board,
 		setBoard
 	} = props
+
+    const dispatch = useDispatch()
 
 	function allowDrop(ev) {
 		ev.preventDefault();
@@ -37,6 +41,7 @@ export const Tile = props => {
 		tempBoard[origin.row][origin.column] = null
 
 		setBoard(tempBoard)
+        dispatch( changeTurn() )  
 	}
 
 	return <>

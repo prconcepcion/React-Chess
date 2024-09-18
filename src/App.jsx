@@ -2,6 +2,8 @@ import './App.scss'
 import { Piece } from './components/Piece'
 import { Tile } from './components/Tile'
 import { useState } from 'react';
+import { useSelector } from 'react-redux'; 
+import { selectTurn } from './store/turn/counterTurn';
 
 const initialBoard = [
 	[ 'blackRook', 'blackKnight', 'blackBishop', 'blackQueen',  'blackKing', 'blackBishop', 'blackKnight', 'blackRook' ],
@@ -14,11 +16,15 @@ const initialBoard = [
 	[ 'whiteRook', 'whiteKnight', 'whiteBishop', 'whiteQueen',  'whiteKing', 'whiteBishop', 'whiteKnight', 'whiteRook' ],
 ]
 
+
+
 function App() {
-
+    const turn = useSelector( selectTurn )
 	const [ board, setBoard ] = useState( initialBoard )
-
-	return ( <div className='chessboard'>
+    
+	return ( 
+        <>
+            <div className='chessboard'>
                 { board.map( ( row, i ) => {
                     return ( <div key={i} className={ (i+1) % 2 === 0 ? 'chessboard-row even' : 'chessboard-row odd' } >
                             { row.map( ( square, j ) => {
@@ -34,7 +40,13 @@ function App() {
                             } ) }
                         </div> )
                 } ) }
-        </div> )
+            </div> 
+            <div>
+                { turn }
+            </div>
+        </>
+
+    )
 }
 
 export default App

@@ -10,11 +10,15 @@ import WhiteKnight from '../assets/white-knight.png'
 import WhitePawn from '../assets/white-pawn.png'
 import WhiteQueen from '../assets/white-queen.png'
 import WhiteRook from '../assets/white-rook.png'
-
+import { useSelector } from 'react-redux'
 
 export const Piece = props => {
   
     const { name, side } = props
+
+    const turn = useSelector( state => state.turn.value  )
+
+    console.log(turn, side)
 
     let image = BlackPawn
     switch( name ) {
@@ -57,6 +61,6 @@ export const Piece = props => {
     }
     
     return <>
-        <img className='piece' id={name} src={image} height="100" width="100" data-side={ side } />
+        <img className='piece' draggable={ turn != side ? false : true } id={name} src={image} height="100" width="100" data-side={ side } />
     </>
 }
