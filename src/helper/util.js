@@ -228,7 +228,7 @@ const pawnMove = ( origin, destination, substractor, attackedPiece, side ) => {
     const startingPositions = [ '10', '11', '12', '13', '14', '15', '16', '17', '60', '61', '62', '63', '64', '65', '66', '67' ]
     const pawnAttack = substractor === 1 ?
     [ ( row + substractor ) + '' + ( column - substractor ), ( row + substractor ) + '' + ( column + substractor ) ] :
-    [ ( row + substractor ) + '' + ( column + substractor ), ( row + substractor ) + '' + ( column + substractor ) ]
+    [ ( row + substractor ) + '' + ( column + substractor ), ( row + substractor ) + '' + ( column + Math.abs(substractor) ) ]
 
 	const pawnMove = [ ( row + substractor ) + '' + column ]
 
