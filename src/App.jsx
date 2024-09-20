@@ -1,9 +1,10 @@
 import './App.scss'
+import { MoveList } from './components/MoveList';
 import { Piece } from './components/Piece'
 import { Tile } from './components/Tile'
 import { useState } from 'react';
 import { useSelector } from 'react-redux'; 
-import { selectTurn } from './store/turn/counterTurn';
+import { selectMoves } from './store/movelist/counterMoveList';
 
 const initialBoard = [
 	[ 'blackRook', 'blackKnight', 'blackBishop', 'blackQueen',  'blackKing', 'blackBishop', 'blackKnight', 'blackRook' ],
@@ -19,9 +20,9 @@ const initialBoard = [
 
 
 function App() {
-    const turn = useSelector( selectTurn )
 	const [ board, setBoard ] = useState( initialBoard )
-    
+    const moveList = useSelector( selectMoves )
+
 	return ( 
         <>
             <div className='chessboard'>
@@ -35,14 +36,14 @@ function App() {
                                     board={board}
                                     setBoard={setBoard}
                                 > 
-                                    { square ? <Piece side={ square.slice( 0, 5 ) } name={ square } /> : null }
+                                    { square ? <Piece isBoard={ true } side={ square.slice( 0, 5 ) } name={ square } /> : null }
                                 </Tile> )
                             } ) }
                         </div> )
                 } ) }
             </div> 
-            <div>
-                { turn }
+            <div className='move-list'>
+                { moveList.length !== 0 &&  <MoveList /> }
             </div>
         </>
 

@@ -14,11 +14,9 @@ import { useSelector } from 'react-redux'
 
 export const Piece = props => {
   
-    const { name, side } = props
-
+    const { name, side, isBoard = false } = props
+    let piece = null
     const turn = useSelector( state => state.turn.value  )
-
-    console.log(turn, side)
 
     let image = BlackPawn
     switch( name ) {
@@ -59,8 +57,14 @@ export const Piece = props => {
             image = BlackPawn
             break;           
     }
+
+    if ( isBoard ) {
+        piece = <img className='piece' draggable={ turn != side ? false : true } id={name} src={image} height="100" width="100" data-side={ side } />
+    } else {
+        piece = <img className='piece' draggable={ false } id={name} src={image} height="20" width="20" />
+    }
     
     return <>
-        <img className='piece' draggable={ turn != side ? false : true } id={name} src={image} height="100" width="100" data-side={ side } />
+        { piece }
     </>
 }

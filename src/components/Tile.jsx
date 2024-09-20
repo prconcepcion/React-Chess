@@ -1,6 +1,7 @@
 import { checkValidMove } from "../helper/util";
 import { useDispatch } from "react-redux";
 import { changeTurn } from "../store/turn/counterTurn";
+import { addMove } from "../store/movelist/counterMoveList";
 
 export const Tile = props => {
 
@@ -41,7 +42,8 @@ export const Tile = props => {
 		tempBoard[origin.row][origin.column] = null
 
 		setBoard(tempBoard)
-        dispatch( changeTurn() )  
+        dispatch( changeTurn() )
+        dispatch( addMove( { piece, destination } ) )
 	}
 
 	return <>
