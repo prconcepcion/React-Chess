@@ -240,7 +240,7 @@ const pawnMove = ( origin, destination, substractor, attackedPiece, side ) => {
         return checkValidAttack( attackedPiece, side )
     }
 
-	if ( pawnMove.includes(destination.row + '' + destination.column ) ) {
+	if ( pawnMove.includes(destination.row + '' + destination.column ) && attackedPiece === null ) {
 		return true
 	}
 
