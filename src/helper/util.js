@@ -42,7 +42,7 @@ const knightMove = ( origin, destination ) => {
     const row = origin.row
     const column = origin.column
 
-    for ( var el of knightMoves ) {
+    for ( const el of knightMoves ) {
       const tempRow = row + el.row
       const tempColumn = column + el.column
       possibleMoves.push( tempRow + '' + tempColumn )
@@ -56,168 +56,73 @@ const knightMove = ( origin, destination ) => {
 }
 
 const rookMove = ( origin, destination, tempBoard ) => {
-	const possibleMoves = {
-        north: [ origin.row + '' + origin.column ],
-        west: [ origin.row + '' + origin.column ],
-        south: [ origin.row + '' + origin.column ],
-        east: [ origin.row + '' + origin.column ],
-    }
-    const row = origin.row
-    const column = origin.column
+    let originRow = origin.row
+    let originColumn = origin.column
+    const destinationRow = destination.row
+    const destinationColumn = destination.column
 
-    let direction = ''
-
-	for ( let i=1; i<=7;i++ ) {
-		const tempRow = { positive: row + i, negative: row-i }
-        const tempColumn = { positive: column + i, negative: column - i }
-		possibleMoves.east.push( row + '' + tempColumn.positive )
-		possibleMoves.west.push( row + '' + tempColumn.negative )
-		possibleMoves.south.push( tempRow.positive + '' + column )
-		possibleMoves.north.push( tempRow.negative + '' + column )
-	}
-
-    if ( destination.row === row && destination.column > column) {
-        direction = 'east'
-    }
-
-    if ( destination.row === row && destination.column < column) {
-        direction = 'west'
-    }
-
-    if ( destination.row > row && destination.column === column) {
-        direction = 'south'
-    }
-
-    if ( destination.row < row && destination.column === column) {
-        direction = 'north'
-    }
-
-    if ( direction === '' ) {
+    if ( originRow !== destinationRow &&  originColumn !== destinationColumn ) {
         return false
     }
 
-    const endpoints =  possibleMoves[direction].indexOf( destination.row + '' + destination.column ) > possibleMoves[direction].indexOf( origin.row + '' + origin.column ) ?
-        { 
-            a: possibleMoves[direction].indexOf( origin.row + '' + origin.column ),
-            b: possibleMoves[direction].indexOf( destination.row + '' + destination.column )
-        } : { 
-            a: possibleMoves[direction].indexOf( destination.row + '' + destination.column ),
-            b: possibleMoves[direction].indexOf( origin.row + '' + origin.column )
-        }
+    let counterRow = destinationRow === originRow ? 0 : 1
+    let counterColumn = destinationColumn === originColumn ? 0 : 1
+    counterRow = destinationRow < originRow ? -counterRow : counterRow
+    counterColumn = destinationColumn < originColumn ? -counterColumn : counterColumn
 
+    while ( true  ) {
+        originRow += counterRow
+        originColumn += counterColumn
 
-    const tilesInBetween = possibleMoves[direction].slice( endpoints.a + 1, endpoints.b )
+        if ( originRow === destinationRow && originColumn === destinationColumn ) break
 
-    for ( const tile of tilesInBetween ) {
-        if ( tempBoard[tile[0]][tile[1]] !== null ) {
+        if ( tempBoard[originRow][originColumn] !== null ) {
             return false
         }
     }
+    
 
-    if ( possibleMoves[direction].includes( destination.row + '' + destination.column ) ) {
-		return true
-	}
-  
-	return false
+    return true
+
 }
 
 const bishopMove = ( origin, destination, tempBoard ) => {
-	const possibleMoves = {
-        northEast: [ origin.row + '' + origin.column ],
-        northWest: [ origin.row + '' + origin.column ],
-        southEast: [ origin.row + '' + origin.column ],
-        southWest: [ origin.row + '' + origin.column ],
-    }
-    const row = origin.row
-    const column = origin.column
+    let originRow = origin.row
+    let originColumn = origin.column
+    const destinationRow = destination.row
+    const destinationColumn = destination.column
 
-	const bishopMoves = {
-		northWest: [-1,-1],
-		southWest: [1,-1],
-		northEast: [-1, 1],
-		southEast: [1,1],
-    }
-
-    let direction = ''
-
-	for ( const move in bishopMoves ) {
-		for ( let i=1; i<=7;i++ ) {
-			const tempRow = row + ( i * bishopMoves[move][0] )
-			const tempColumn = column + (i * bishopMoves[move][1] )
-			possibleMoves[move].push( tempRow + '' + tempColumn )
-		}
-	}
-
-    if ( destination.row < origin.row && destination.column < origin.column ) {
-        direction = 'northWest'
-    }
-
-    if ( destination.row < origin.row && destination.column > origin.column ) {
-        direction = 'northEast'
-    }
-
-    if ( destination.row > origin.row && destination.column < origin.column ) {
-        direction = 'southWest'
-    }
-
-    if ( destination.row > origin.row && destination.column > origin.column ) {
-        direction = 'southEast'
-    }
-
-    if ( direction === '' ) {
+    if ( Math.abs( destinationRow - originRow ) !== Math.abs( destinationColumn - originColumn ) ) {
         return false
     }
 
-    const endpoints =  possibleMoves[direction].indexOf( destination.row + '' + destination.column ) > possibleMoves[direction].indexOf( origin.row + '' + origin.column ) ?
-        { 
-            a: possibleMoves[direction].indexOf( origin.row + '' + origin.column ),
-            b: possibleMoves[direction].indexOf( destination.row + '' + destination.column )
-        } : { 
-            a: possibleMoves[direction].indexOf( destination.row + '' + destination.column ),
-            b: possibleMoves[direction].indexOf( origin.row + '' + origin.column )
-        }
-    
-    const tilesInBetween = possibleMoves[direction].slice( endpoints.a + 1, endpoints.b )
+    let counterRow = destinationRow > originRow ? 1 : -1
+    let counterColumn = destinationColumn > originColumn ? 1 : -1
 
-    for ( const tile of tilesInBetween ) {
-        if ( tempBoard[tile[0]][tile[1]] !== null ) {
+    while ( true  ) {
+        originRow += counterRow
+        originColumn += counterColumn
+        
+        if ( originRow === destinationRow && originColumn === destinationColumn ) break
+
+        if ( tempBoard[originRow][originColumn] !== null ) {
             return false
         }
     }
 
-    if ( possibleMoves[direction].includes( destination.row + '' + destination.column ) ) {
-		return true
-	}
-
-	return false
+	return true
 
 }
 
 const kingMove = ( origin, destination) => {
-	const possibleMoves = []
-	const row = origin.row
-    const column = origin.column
+    const originRow = origin.row
+    const originColumn = origin.column
+    const destinationRow = destination.row
+    const destinationColumn = destination.column
 
-	const kingMoves = [
-		[-1,-1],
-		[1,-1],
-		[-1, 1],
-		[1,1],
-		[1,0],
-		[-1,0],
-		[0,1],
-		[0,-1]
-	]
-
-	for ( const move of kingMoves ) {
-		const tempRow = row + move[0]
-		const tempColumn = column + move[1]
-		possibleMoves.push( tempRow + '' + tempColumn )
-	}
-
-	if ( possibleMoves.includes( destination.row + '' + destination.column ) ) {
-		return true
-	}
+    if ( Math.abs( destinationRow - originRow ) <= 1 && Math.abs( destinationColumn - originColumn ) <= 1 ) {
+        return true
+    }
   
 	return false
 }
@@ -236,7 +141,7 @@ const pawnMove = ( origin, destination, substractor, attackedPiece, side ) => {
         pawnMove.push( ( row + ( substractor * 2 ) ) + '' + column )
     }
 
-    if ( pawnAttack.includes( destination.row + '' + destination.column ) ) {
+    if ( pawnAttack.includes( destination.row + '' + destination.column )  && attackedPiece !== null ) {
         return checkValidAttack( attackedPiece, side )
     }
 
