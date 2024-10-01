@@ -1,34 +1,50 @@
+import { store } from "../store/store"
+import { whiteCastling, blackCastling } from "../store/castling/counterCastle"
+
 export const checkValidMove = ( move ) => {
   
-	const { piece, origin, destination, tempBoard, pieceAtDestination, side, } = move
+	const { piece, origin, destination, board, pieceAtDestination, side } = move
+    let isValid = false
+
+
+    const test = [ ...board ]
 
 	if ( piece === 'blackKnight' || piece === 'whiteKnight' ) {
-		return knightMove( origin, destination ) && checkValidAttack( pieceAtDestination, side )
+		isValid = knightMove( origin, destination )
 	}
 
 	if ( piece === 'blackRook' || piece === 'whiteRook' ) {
-		return rookMove( origin, destination, tempBoard ) && checkValidAttack( pieceAtDestination, side )
+		isValid = rookMove( origin, destination, piece, test )
 	}
 
 	if ( piece === 'blackBishop' || piece === 'whiteBishop' ) {
-		return bishopMove( origin, destination, tempBoard ) && checkValidAttack( pieceAtDestination, side )
+		isValid = bishopMove( origin, destination, test )
 	}
 	
 	if ( piece === 'blackQueen' || piece === 'whiteQueen' ) {
-		return ( bishopMove( origin, destination, tempBoard ) || rookMove( origin, destination, tempBoard ) ) && checkValidAttack( pieceAtDestination, side )
+		isValid = ( bishopMove( origin, destination, test ) || rookMove( origin, destination, test ) )
 	}
 
 	if ( piece === 'blackKing' || piece === 'whiteKing' ) {
-		return kingMove( origin, destination ) && checkValidAttack( pieceAtDestination, side )
+		isValid = kingMove( origin, destination, piece, test, )
 	}
 
-	if ( piece === 'blackPawn' ) {
-		return pawnMove( origin, destination, 1, pieceAtDestination, side )
+    if ( isValid && checkValidAttack( pieceAtDestination, side ) ) {
+        test[destination.row][destination.column] = piece
+		test[origin.row][origin.column] = null
+        return { board: test, isValid  }
+    }
+
+	if ( piece === 'blackPawn' || piece === 'whitePawn' ) {
+        const counter = piece === 'blackPawn' ? 1 : -1
+        if ( pawnMove( origin, destination, counter, pieceAtDestination, side ) ) {
+            test[destination.row][destination.column] = piece
+            test[origin.row][origin.column] = null
+            return { board: test, isValid: true }
+        }
 	}
 
-	if ( piece === 'whitePawn' ) {
-		return pawnMove( origin, destination, -1, pieceAtDestination, side )
-	}
+    return { isValid: false }
 
 }
 
@@ -55,13 +71,13 @@ const knightMove = ( origin, destination ) => {
 	return false
 }
 
-const rookMove = ( origin, destination, tempBoard ) => {
+const rookMove = ( origin, destination, piece, board ) => {
     let originRow = origin.row
     let originColumn = origin.column
     const destinationRow = destination.row
     const destinationColumn = destination.column
 
-    if ( originRow !== destinationRow &&  originColumn !== destinationColumn ) {
+    if ( originRow === destinationRow && originColumn === destinationColumn ) {
         return false
     }
 
@@ -71,22 +87,29 @@ const rookMove = ( origin, destination, tempBoard ) => {
     counterColumn = destinationColumn < originColumn ? -counterColumn : counterColumn
 
     while ( true  ) {
+
         originRow += counterRow
         originColumn += counterColumn
 
         if ( originRow === destinationRow && originColumn === destinationColumn ) break
-
-        if ( tempBoard[originRow][originColumn] !== null ) {
+        if ( board[originRow][originColumn] !== null ) {
             return false
         }
+
+
+    }
+
+    if ( piece === 'whiteRook' ) {
+        store.dispatch( whiteCastling( origin.row + '' + origin.column ) )
+    } else { 
+        store.dispatch( blackCastling( origin.row + '' + origin.column ) )
     }
     
-
     return true
 
 }
 
-const bishopMove = ( origin, destination, tempBoard ) => {
+const bishopMove = ( origin, destination, board ) => {
     let originRow = origin.row
     let originColumn = origin.column
     const destinationRow = destination.row
@@ -105,7 +128,7 @@ const bishopMove = ( origin, destination, tempBoard ) => {
         
         if ( originRow === destinationRow && originColumn === destinationColumn ) break
 
-        if ( tempBoard[originRow][originColumn] !== null ) {
+        if ( board[originRow][originColumn] !== null ) {
             return false
         }
     }
@@ -114,23 +137,100 @@ const bishopMove = ( origin, destination, tempBoard ) => {
 
 }
 
-const kingMove = ( origin, destination) => {
+const validCastle = ( origin, destination, piece, board ) => {
+    const originRow = origin.row
+    const originColumn = origin.column
+    const destinationColumn = destination.column
+    const {
+        whiteCastleLeft,
+        whiteCastleRight,
+        blackCastleLeft,
+        blackCastleRight
+    } = store.getState().castle
+
+    if ( ! [ 0, 7 ].includes( originRow ) ) {
+        return false
+    }
+
+    if ( ! [ 6, 2 ].includes( destinationColumn ) ) {
+        return false
+    }
+
+    if ( piece === 'whiteKing' && destinationColumn === 6 && ( ! whiteCastleRight || board[7][7] !== 'whiteRook' )) {
+        return false
+    }
+
+    if ( piece === 'whiteKing' && destinationColumn === 2 && ( ! whiteCastleLeft || board[7][0] !== 'whiteRook')  ) {
+        return false
+    }
+
+    if ( piece === 'blackKing' && destinationColumn === 6 && ( ! blackCastleRight || board[0][0] !== 'blackRook' )  ) {
+        return false
+    }
+
+    if ( piece === 'blackKing' && destinationColumn === 2 && ( ! blackCastleLeft || board[0][7] !== 'blackRook' )  ) {
+        return false
+    }
+
+    const counter = destinationColumn > originColumn ? 1 : -1
+    const newRookColumn = destinationColumn === 6 ? 5 : 3
+    const oldRookColumn = destinationColumn === 6 ? 7 : 0
+    let i = originColumn
+
+    if( board[originRow][i + counter] !== null ) {
+        return false
+    }
+
+    return { castled: true, newRookColumn, oldRookColumn }
+}
+
+const kingMove = ( origin, destination, piece, board ) => {
     const originRow = origin.row
     const originColumn = origin.column
     const destinationRow = destination.row
     const destinationColumn = destination.column
 
-    if ( Math.abs( destinationRow - originRow ) <= 1 && Math.abs( destinationColumn - originColumn ) <= 1 ) {
+    const canCastle = validCastle( origin, destination, piece, board )
+    const counterCastle = store.getState().castle
+
+    if ( canCastle ) {
+        const rook = piece === 'blackKing' ? 'blackRook' : 'whiteRook'
+        board[ originRow ][ canCastle.newRookColumn ] = rook
+        board[ originRow ][ canCastle.oldRookColumn ] = null
+        board[ originRow ][ originColumn ] = null
+
+        if ( piece === 'whiteKing' ) {
+            store.dispatch( whiteCastling( 'king' ) )
+        } else { 
+            store.dispatch( blackCastling( 'king' ) )
+        }
+
         return true
     }
-  
-	return false
+
+    if ( piece === 'whiteKing' && counterCastle.whiteCastleLeft && counterCastle.whiteCastleRight ) {
+        console.log( 'gherere' )
+        store.dispatch( whiteCastling( 'king' ) )
+    }
+
+    if ( piece === 'blackKing' && counterCastle.blackCastleLeft && counterCastle.blackCastleRight ) {
+        store.dispatch( blackCastling( 'king' ) )
+    }
+    
+    if ( Math.abs( destinationRow - originRow ) !== 1 || Math.abs( destinationColumn - originColumn ) !== 1 ) {
+        return false
+    }
+
+    console.log('here')
+
+	return true
 }
 
 const pawnMove = ( origin, destination, substractor, attackedPiece, side ) => {
 	const row = origin.row
     const column = origin.column
     const startingPositions = [ '10', '11', '12', '13', '14', '15', '16', '17', '60', '61', '62', '63', '64', '65', '66', '67' ]
+
     const pawnAttack = substractor === 1 ?
     [ ( row + substractor ) + '' + ( column - substractor ), ( row + substractor ) + '' + ( column + substractor ) ] :
     [ ( row + substractor ) + '' + ( column + substractor ), ( row + substractor ) + '' + ( column + Math.abs(substractor) ) ]

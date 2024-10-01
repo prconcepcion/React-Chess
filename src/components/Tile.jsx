@@ -30,18 +30,28 @@ export const Tile = props => {
 		const piece = ev.dataTransfer.getData("piece")
 		let origin = ev.dataTransfer.getData("origin")
 		const side = ev.dataTransfer.getData("side")
-		const tempBoard = board.slice()
+
 		const destination = { row: parseInt( coordinate[0], 10 ), column: parseInt( coordinate[1], 10 ) }
 		origin = { row: parseInt( origin[0], 10 ), column: parseInt( origin[1], 10) }
 
-		if ( ! checkValidMove( { piece, origin: origin, destination, tempBoard, pieceAtDestination: tempBoard[destination.row][destination.column], side } ) ) {
-			return
-		}
+        const move = checkValidMove( { 
+            piece, 
+            origin, 
+            destination, 
+            board, 
+            pieceAtDestination: board[destination.row][destination.column], 
+            side,
+        } )
 
-		tempBoard[destination.row][destination.column] = piece
-		tempBoard[origin.row][origin.column] = null
+        console.log(move.board, move)
 
-		setBoard(tempBoard)
+        if ( ! move.isValid ) {
+            return
+        }
+
+        
+
+		setBoard( move.board )
         dispatch( changeTurn() )
         dispatch( addMove( { piece, destination } ) )
 	}
