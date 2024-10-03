@@ -43,13 +43,15 @@ export const Tile = props => {
             side,
         } )
 
-        console.log(move.board, move)
-
         if ( ! move.isValid ) {
             return
         }
 
-        
+        if ( move?.isPromoting ) {
+            setBoard( move.board )
+            dispatch( addMove( { piece, destination } ) )
+            return
+        }
 
 		setBoard( move.board )
         dispatch( changeTurn() )
@@ -65,7 +67,7 @@ export const Tile = props => {
 			data-coordinate={coordinate}
 		>
 			<span draggable={false}>{coordinate}</span>
-			{children}
+			{ children }
 		</div>
 	</>
 

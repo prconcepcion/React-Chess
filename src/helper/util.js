@@ -38,9 +38,12 @@ export const checkValidMove = ( move ) => {
 	if ( piece === 'blackPawn' || piece === 'whitePawn' ) {
         const counter = piece === 'blackPawn' ? 1 : -1
         if ( pawnMove( origin, destination, counter, pieceAtDestination, side ) ) {
-            test[destination.row][destination.column] = piece
+            const endingPositions = [ '00', '01', '02', '03', '04', '05', '06', '07', '70', '71', '72', '73', '74', '75', '76', '77' ]
+            let tempPiece = 'promotingPiece'
+            const isPromoting = endingPositions.includes( destination.row + '' + destination.column )
+            test[destination.row][destination.column] = isPromoting ? tempPiece : piece
             test[origin.row][origin.column] = null
-            return { board: test, isValid: true }
+            return { board: test, isValid: true, isPromoting }
         }
 	}
 
@@ -95,7 +98,6 @@ const rookMove = ( origin, destination, piece, board ) => {
         if ( board[originRow][originColumn] !== null ) {
             return false
         }
-
 
     }
 
@@ -169,7 +171,7 @@ const validCastle = ( origin, destination, piece, board ) => {
     }
 
     if ( piece === 'blackKing' && destinationColumn === 2 && ( ! blackCastleLeft || board[0][7] !== 'blackRook' )  ) {
-        return false
+                return false
     }
 
     const counter = destinationColumn > originColumn ? 1 : -1
@@ -207,21 +209,18 @@ const kingMove = ( origin, destination, piece, board ) => {
 
         return true
     }
+    
+    if ( Math.abs( destinationRow - originRow ) > 1 || Math.abs( destinationColumn - originColumn ) > 1 ) {
+        return false
+    }
 
     if ( piece === 'whiteKing' && counterCastle.whiteCastleLeft && counterCastle.whiteCastleRight ) {
-        console.log( 'gherere' )
         store.dispatch( whiteCastling( 'king' ) )
     }
 
     if ( piece === 'blackKing' && counterCastle.blackCastleLeft && counterCastle.blackCastleRight ) {
         store.dispatch( blackCastling( 'king' ) )
     }
-    
-    if ( Math.abs( destinationRow - originRow ) !== 1 || Math.abs( destinationColumn - originColumn ) !== 1 ) {
-        return false
-    }
-
-    console.log('here')
 
 	return true
 }
