@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux'; 
 import { selectMoves } from './store/movelist/counterMoveList';
 import { GameOverScreen } from './components/GameOverScreen';
-import { initialBoard } from './helper/util';
 
 const test = [
 	[ 'blackRook', null, 'blackPawn', null,  'blackKing', null, null, 'blackRook' ],
@@ -21,9 +20,20 @@ const test = [
 
 
 function App() {
-	const [ board, setBoard ] = useState( initialBoard )
+	const [ board, setBoard ] = useState( [
+        [ 'blackRook', 'blackKnight', 'blackBishop', 'blackQueen',  'blackKing', 'blackBishop', 'blackKnight', 'blackRook' ],
+        [ 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', ],
+        [ null, null, null, null, null, null, null, null, ],
+        [ null, null, null, null, null, null, null, null, ],
+        [ null, null, null, null, null, null, null, null, ],
+        [ null, null, null, null, null, null, null, null, ],
+        [ 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', ],
+        [ 'whiteRook', 'whiteKnight', 'whiteBishop', 'whiteQueen',  'whiteKing', 'whiteBishop', 'whiteKnight', 'whiteRook' ],
+    ] )
     const moveList = useSelector( selectMoves )
     const [ gameover, setGameover ] = useState( false )
+
+    console.log(board)
 
 	return ( 
         <>

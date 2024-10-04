@@ -4,8 +4,17 @@ import { useDispatch } from "react-redux";
 import { resetCastle } from '../store/castling/counterCastle';
 import { resetMoveList } from '../store/movelist/counterMoveList';
 import { resetTurn } from '../store/turn/counterTurn';
-import { initialBoard } from '../helper/util';
 
+const INITIAL_BOARD = [
+	[ 'blackRook', 'blackKnight', 'blackBishop', 'blackQueen',  'blackKing', 'blackBishop', 'blackKnight', 'blackRook' ],
+	[ 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', 'blackPawn', ],
+	[ null, null, null, null, null, null, null, null, ],
+	[ null, null, null, null, null, null, null, null, ],
+	[ null, null, null, null, null, null, null, null, ],
+	[ null, null, null, null, null, null, null, null, ],
+	[ 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', ],
+	[ 'whiteRook', 'whiteKnight', 'whiteBishop', 'whiteQueen',  'whiteKing', 'whiteBishop', 'whiteKnight', 'whiteRook' ],
+]
 
 export const GameOverScreen = ({ setBoard, setGameover }) => {
     const turn = useSelector( selectTurn  )
@@ -13,7 +22,7 @@ export const GameOverScreen = ({ setBoard, setGameover }) => {
     const dispatch = useDispatch()
 
     const reset = () => {
-        setBoard( initialBoard )
+        setBoard( INITIAL_BOARD )
         setGameover( false )
         dispatch( resetCastle() )
         dispatch( resetMoveList() )
