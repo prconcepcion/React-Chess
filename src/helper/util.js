@@ -6,7 +6,6 @@ export const checkValidMove = ( move ) => {
 	const { piece, origin, destination, board, pieceAtDestination, side } = move
     let isValid = false
 
-
     const test = [ ...board ]
 
 	if ( piece === 'blackKnight' || piece === 'whiteKnight' ) {

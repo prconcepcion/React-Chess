@@ -73,7 +73,6 @@ export const Tile = props => {
 			onDragOver={e=>allowDrop(e)}
 			data-coordinate={coordinate}
 		>
-			<span draggable={false}>{coordinate}</span>
 			{ children }
 		</div>
 	</>

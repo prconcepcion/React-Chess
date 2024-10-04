@@ -3,8 +3,6 @@ import { MoveList } from './components/MoveList';
 import { Piece } from './components/Piece'
 import { Tile } from './components/Tile'
 import { useState } from 'react';
-import { useSelector } from 'react-redux'; 
-import { selectMoves } from './store/movelist/counterMoveList';
 import { GameOverScreen } from './components/GameOverScreen';
 
 function App() {
@@ -18,10 +16,7 @@ function App() {
         [ 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', 'whitePawn', ],
         [ 'whiteRook', 'whiteKnight', 'whiteBishop', 'whiteQueen',  'whiteKing', 'whiteBishop', 'whiteKnight', 'whiteRook' ],
     ] )
-    const moveList = useSelector( selectMoves )
     const [ gameover, setGameover ] = useState( false )
-
-    console.log(board)
 
 	return ( 
         <>
