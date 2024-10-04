@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux'; 
 import { selectTurn } from '../store/turn/counterTurn'
-import { initialBoard } from '../App';
 import { useDispatch } from "react-redux";
 import { resetCastle } from '../store/castling/counterCastle';
 import { resetMoveList } from '../store/movelist/counterMoveList';
 import { resetTurn } from '../store/turn/counterTurn';
+import { initialBoard } from '../helper/util';
 
 
 export const GameOverScreen = ({ setBoard, setGameover }) => {
