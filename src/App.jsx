@@ -45,7 +45,7 @@ function App() {
                 { gameover && <GameOverScreen setBoard={ setBoard } setGameover={ setGameover } /> }
             </div> 
             <div className='move-list'>
-                { moveList.length !== 0 &&  <MoveList /> }
+                <MoveList />
             </div>
         </>
 

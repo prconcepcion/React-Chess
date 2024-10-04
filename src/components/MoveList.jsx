@@ -11,13 +11,19 @@ export const MoveList = () => {
 
     return (
         <table>
+              <thead>
+                <tr>
+                    <th>#</th>
+                    <th>MOVE</th>
+                </tr>
+            </thead>
             <tbody>
                 { moveList.map( ( move, index ) => {
                     return (
                         <tr key={index}>
                             <td>{ index + 1 }</td>
                             <td className='move'>
-                            <Piece name={ move.piece } />
+                                <Piece name={ move.piece } />
                                 { column[move.destination.column] }{ row[move.destination.row] }
                             </td>
                         </tr>
