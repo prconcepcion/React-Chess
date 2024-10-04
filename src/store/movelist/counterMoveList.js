@@ -15,12 +15,13 @@ export const counterMoveList = createSlice({
       // immutable state based off those changes
       state.moves = [ ...state.moves, action.payload ]
     },
+    resetMoveList: () => initialState,
   },
 
 })
 
 // Action creators are generated for each case reducer function
-export const { addMove } = counterMoveList.actions
+export const { addMove, resetMoveList } = counterMoveList.actions
 
 export const selectMoves = state => state.moveList.moves 
 

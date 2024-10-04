@@ -37,11 +37,12 @@ export const counterCastle = createSlice( {
             state.blackCastleRight = false
         }
     },
+    resetCastle: () => initialState,
   } 
 } )
 
 // Action creators are generated for each case reducer function
-export const { whiteCastling, blackCastling } = counterCastle.actions
+export const { whiteCastling, blackCastling, resetCastle } = counterCastle.actions
 
 export const selectCastle = state => state.castle 
 

@@ -29,10 +29,12 @@ export const checkValidMove = ( move ) => {
 		isValid = kingMove( origin, destination, piece, test, )
 	}
 
+    const isGameover = ['blackKing', 'whiteKing'].includes( pieceAtDestination )
+
     if ( isValid && checkValidAttack( pieceAtDestination, side ) ) {
         test[destination.row][destination.column] = piece
 		test[origin.row][origin.column] = null
-        return { board: test, isValid  }
+        return { board: test, isValid, isGameover  }
     }
 
 	if ( piece === 'blackPawn' || piece === 'whitePawn' ) {
@@ -41,9 +43,9 @@ export const checkValidMove = ( move ) => {
             const endingPositions = [ '00', '01', '02', '03', '04', '05', '06', '07', '70', '71', '72', '73', '74', '75', '76', '77' ]
             let tempPiece = 'promotingPiece'
             const isPromoting = endingPositions.includes( destination.row + '' + destination.column )
-            test[destination.row][destination.column] = isPromoting ? tempPiece : piece
-            test[origin.row][origin.column] = null
-            return { board: test, isValid: true, isPromoting }
+            test[destination.row][destination.column] = isPromoting && ! isGameover ? tempPiece : piece
+            test[origin.row][origin.column] = null            
+            return { board: test, isValid: true, isPromoting, isGameover }
         }
 	}
 

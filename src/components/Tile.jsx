@@ -9,7 +9,8 @@ export const Tile = props => {
 		children, 
 		coordinate, 
 		board,
-		setBoard
+		setBoard,
+        setGameover
 	} = props
 
     const dispatch = useDispatch()
@@ -42,6 +43,12 @@ export const Tile = props => {
             pieceAtDestination: board[destination.row][destination.column], 
             side,
         } )
+
+        if ( move?.isGameover ) {
+            dispatch( addMove( { piece, destination } ) )
+            setGameover( true )
+            return
+        }
 
         if ( ! move.isValid ) {
             return

@@ -15,11 +15,12 @@ export const counterTurn = createSlice({
       // immutable state based off those changes
       state.value = state.value === 'white' ? 'black' : 'white'
     },
+    resetTurn: () => initialState,
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { changeTurn } = counterTurn.actions
+export const { changeTurn, resetTurn } = counterTurn.actions
 
 export const selectTurn = state => state.turn.value 
 
