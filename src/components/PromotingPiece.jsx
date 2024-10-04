@@ -13,7 +13,7 @@ import { changeTurn } from "../store/turn/counterTurn";
 import { useSelector } from 'react-redux'
 import { selectTurn } from '../store/turn/counterTurn'
 
-export const PromotingPiece = ({coordinate, board, setBoard}) => {
+export const PromotingPiece = ({ coordinate, board, setBoard }) => {
 
     const turn = useSelector( selectTurn )
     const dispatch = useDispatch()
@@ -28,16 +28,16 @@ export const PromotingPiece = ({coordinate, board, setBoard}) => {
     if ( turn === 'black' ) {
         return (
             <div className='promoting-piece'>
-                <button onClick={ () => promote( 'blackBishop' ) } type="submit">
+                <button onClick={ () => promote( 'blackBishop' ) } className="btn-promotion">
                     <img src={ BlackBishop } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'blackKnight' ) } type="submit">
+                <button onClick={ () => promote( 'blackKnight' ) } className="btn-promotion">
                     <img src={ BlackKnight } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'blackQueen' ) } type="submit">
+                <button onClick={ () => promote( 'blackQueen' ) } className="btn-promotion">
                     <img src={ BlackQueen } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'blackRook' ) } type="submit">
+                <button onClick={ () => promote( 'blackRook' ) } className="btn-promotion">
                     <img src={ BlackRook } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
             </div>
@@ -45,16 +45,16 @@ export const PromotingPiece = ({coordinate, board, setBoard}) => {
     } else {
         return (
             <div className='promoting-piece'>
-                <button onClick={ () => promote( 'whiteBishop' ) } type="">
+                <button onClick={ () => promote( 'whiteBishop' ) } className="btn-promotion">
                     <img src={ WhiteBishop } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'whiteKnight' ) } type="">
+                <button onClick={ () => promote( 'whiteKnight' ) } className="btn-promotion">
                     <img src={ WhiteKnight } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'whiteQueen' ) } type="">
+                <button onClick={ () => promote( 'whiteQueen' ) } className="btn-promotion">
                     <img src={ WhiteQueen } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
-                <button onClick={ () => promote( 'whiteRook' ) } type="">
+                <button onClick={ () => promote( 'whiteRook' ) } className="btn-promotion">
                     <img src={ WhiteRook } height="20" width="20" alt="buttonpng" border="0" />
                 </button>
             </div>
