@@ -13,8 +13,8 @@ The project can be played in this [link](http://13.229.113.162:8080/). I built t
 
 I made this project with the following intentions:
 1. Practice React.js
-2. Learning How Redux Toolkit works.
-3. Putting it on web the through AWS.
+2. Learn How Redux Toolkit works.
+3. See it on web the through AWS.
 
 Though the project is not perfect, I am happy with what I was able to accomplish. I will one day make a better one.
 
