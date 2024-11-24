@@ -21,7 +21,7 @@ export const checkValidMove = ( move ) => {
 	}
 	
 	if ( piece === 'blackQueen' || piece === 'whiteQueen' ) {
-		isValid = ( bishopMove( origin, destination, test ) || rookMove( origin, destination, test ) )
+		isValid = ( bishopMove( origin, destination, test ) || rookMove( origin, destination, piece, test ) )
 	}
 
 	if ( piece === 'blackKing' || piece === 'whiteKing' ) {
