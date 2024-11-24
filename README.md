@@ -10,7 +10,7 @@
 
 Chess made with React.js and Redux Toolkit. I used the HTML Drag and Drop API to move the pieces. The one thing that I did not implement is _**En passant**_ because I did not want to implement it. Castling is possible but the game does not prevent you from castling into a checkmate. 
 
-The project can be played in this [link](http://13.229.113.162:8080/). I built the project using Vite then created a dockerfile to build an image. I pushed an Image on AWS ECR. I then pulled the image on an AWS EC2 Instance and ran it as a container.
+The project can be played in this [link](http://54.169.236.118:8080/). I built the project using Vite then created a dockerfile to build an image. I pushed an Image on AWS ECR. I then pulled the image on an AWS EC2 Instance and ran it as a container.
 
 I made this project with the following intentions:
 1. Practice React.js
